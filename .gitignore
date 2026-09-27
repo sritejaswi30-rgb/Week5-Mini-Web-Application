@@ -1,0 +1,23 @@
+# Dependencies and generated build output
+node_modules/
+dist/
+build/
+coverage/
+
+# Local environment and debug files
+.env
+.env.*
+!.env.example
+*.log
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Browser automation artifacts and temporary captures
+playwright-report/
+test-results/
+screenshots/
+*.har

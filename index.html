@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="A clear, interactive view of student achievement and engagement.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%236a5ae0'/%3E%3Ctext x='50%25' y='68%25' text-anchor='middle' font-family='Arial' font-size='25' font-weight='bold' fill='white'%3EN%3C/text%3E%3C/svg%3E">
+  <title>Student Performance Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="#main-content" aria-label="Northstar Academy home"><span class="brand-mark" aria-hidden="true">N</span><span>northstar<span class="brand-light"> / academy</span></span></a>
+    <div class="topbar-right"><span class="term-label">ACADEMIC YEAR 2024–25</span><span class="avatar" aria-label="Signed in as Alex Morgan">AM</span></div>
+  </header>
+  <nav class="primary-nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <button class="nav-button active" type="button" data-section="dashboard" aria-current="page"><span aria-hidden="true">⌂</span> Dashboard</button>
+      <button class="nav-button" type="button" data-section="students"><span aria-hidden="true">♧</span> Students</button>
+      <button class="nav-button" type="button" data-section="analytics"><span aria-hidden="true">▥</span> Analytics</button>
+      <button class="nav-button" type="button" data-section="about"><span aria-hidden="true">ⓘ</span> About</button>
+    </div>
+  </nav>
+  <main id="main-content" class="dashboard-shell">
+    <section id="section-dashboard" class="app-section" aria-labelledby="page-title">
+      <div class="page-heading"><div><p class="eyebrow">ACADEMIC OVERVIEW <span class="eyebrow-dot" aria-hidden="true"></span> SPRING SEMESTER</p><h1 id="page-title" tabindex="-1">Student performance</h1><p class="intro">A clear view of achievement and engagement across your school.</p></div><div class="updated-label"><span class="live-dot" aria-hidden="true"></span> Live dashboard</div></div>
+      <div class="summary-grid" aria-label="Performance summary">
+        <article class="summary-card"><div class="card-label">Total students <span class="metric-icon icon-violet" aria-hidden="true">♧</span></div><p class="metric-value" id="total-students">—</p><p class="metric-foot">In current selection</p></article>
+        <article class="summary-card"><div class="card-label">Average score <span class="metric-icon icon-blue" aria-hidden="true">↗</span></div><p class="metric-value" id="average-score">—</p><p class="metric-foot">Out of 100 points</p></article>
+        <article class="summary-card"><div class="card-label">Pass rate <span class="metric-icon icon-green" aria-hidden="true">✓</span></div><p class="metric-value" id="pass-rate">—</p><p class="metric-foot">Students passing</p></article>
+        <article class="summary-card"><div class="card-label">Top performer <span class="metric-icon icon-amber" aria-hidden="true">✦</span></div><p class="metric-value metric-name" id="top-performer">—</p><p class="metric-foot" id="top-performer-foot">Highest score</p></article>
+      </div>
+      <div class="quick-actions" aria-label="Dashboard quick actions"><span class="quick-label">QUICK ACTIONS</span><button type="button" class="action-button primary-action" data-go="students">Explore students <span aria-hidden="true">→</span></button><button type="button" class="action-button" data-go="analytics">View analytics <span aria-hidden="true">↗</span></button><button type="button" class="action-button" id="dashboard-reset">Reset all filters <span aria-hidden="true">↺</span></button></div>
+      <div class="content-grid">
+        <article class="panel chart-panel"><div class="panel-heading"><div><h2>Score distribution</h2><p class="panel-subtitle">Student scores across the current selection</p></div><span class="chart-legend"><span class="legend-dot" aria-hidden="true"></span> Students</span></div><div id="chart-container" class="chart-container" aria-live="polite"></div></article>
+        <article class="panel snapshot-panel"><div class="panel-heading"><div><h2>Grade distribution</h2><p class="panel-subtitle">Share of students by grade</p></div></div><div id="grade-snapshot" class="grade-snapshot" aria-live="polite"></div></article>
+      </div>
+      <article class="panel recent-panel"><div class="panel-heading"><div><h2>Leading students</h2><p class="panel-subtitle">Top results from the current selection</p></div><button class="small-action" type="button" data-go="students">View all students <span aria-hidden="true">→</span></button></div><div id="top-students" class="top-students" aria-live="polite"></div></article>
+    </section>
+
+    <section id="section-students" class="app-section" aria-labelledby="students-heading" hidden>
+      <div class="page-heading"><div><p class="eyebrow">STUDENT RECORDS <span class="eyebrow-dot" aria-hidden="true"></span> DIRECTORY</p><h1 id="students-heading" tabindex="-1">Students</h1><p class="intro">Find a student, compare results, and review individual records.</p></div><span class="section-count" id="section-count">24 records</span></div>
+      <article class="panel student-panel">
+        <div class="student-heading"><div><h2>Student directory</h2><p class="panel-subtitle">Choose filters, then apply to update the directory and dashboard.</p></div><span id="result-count" class="result-count" aria-live="polite">Loading students…</span></div>
+        <form id="filters" class="filters" role="search">
+          <div class="field search-field"><label for="search">Search students</label><div class="input-wrap"><span class="search-icon" aria-hidden="true">⌕</span><input id="search" name="search" type="search" placeholder="Search by name…" autocomplete="off"></div></div>
+          <div class="field"><label for="department-filter">Department</label><select id="department-filter" name="department"><option value="">All departments</option></select></div>
+          <div class="field"><label for="grade-filter">Grade</label><select id="grade-filter" name="grade"><option value="">All grades</option></select></div>
+          <div class="field"><label for="status-filter">Status</label><select id="status-filter" name="status"><option value="">All statuses</option><option value="Pass">Passing</option><option value="Fail">Needs support</option></select></div>
+          <button id="apply-filters" class="action-button primary-action apply-action" type="submit">Apply filters</button>
+          <button id="reset-filters" class="action-button reset-button" type="reset">Reset filters</button>
+        </form>
+        <div class="sort-toolbar"><span>Sort records</span><div class="sort-buttons" role="group" aria-label="Sort student records"><button class="sort-button active" type="button" data-sort="name" aria-pressed="true">Name <span aria-hidden="true">↑</span></button><button class="sort-button" type="button" data-sort="marks" aria-pressed="false">Marks <span aria-hidden="true">↕</span></button><button class="sort-button" type="button" data-sort="attendance" aria-pressed="false">Attendance <span aria-hidden="true">↕</span></button></div></div>
+        <div class="table-wrap" tabindex="0" aria-label="Scrollable student results table"><table><thead><tr><th scope="col">Student</th><th scope="col">Department</th><th scope="col">Semester</th><th scope="col">Marks</th><th scope="col">Attendance</th><th scope="col">Grade</th><th scope="col">Status</th><th scope="col">Details</th></tr></thead><tbody id="student-rows"></tbody></table></div>
+        <div id="empty-state" class="empty-state" hidden><span class="empty-icon" aria-hidden="true">⌕</span><h3>No results found</h3><p>Try changing your search or filters to find students.</p><button class="action-button" id="empty-reset" type="button">Clear all filters</button></div>
+        <p id="load-error" class="load-error" role="alert" hidden>We couldn’t load student data. Check that you’re running this project through a local server, then refresh the page.</p>
+      </article>
+    </section>
+
+    <section id="section-analytics" class="app-section" aria-labelledby="analytics-heading" hidden>
+      <div class="page-heading"><div><p class="eyebrow">SCHOOL INSIGHTS <span class="eyebrow-dot" aria-hidden="true"></span> ANALYTICS</p><h1 id="analytics-heading" tabindex="-1">Performance analytics</h1><p class="intro">A deeper look at achievement and attendance across the current selection.</p></div><span class="section-count">Updates with applied filters</span></div>
+      <div class="analytics-metrics">
+        <article class="summary-card analytics-card"><div class="card-label">Average marks</div><p id="analytics-average" class="metric-value">—</p><p class="metric-foot">Across selected students</p></article>
+        <article class="summary-card analytics-card"><div class="card-label">Highest marks</div><p id="analytics-high" class="metric-value">—</p><p id="analytics-high-name" class="metric-foot">Top score</p></article>
+        <article class="summary-card analytics-card"><div class="card-label">Lowest marks</div><p id="analytics-low" class="metric-value">—</p><p id="analytics-low-name" class="metric-foot">Lowest score</p></article>
+        <article class="summary-card analytics-card"><div class="card-label">Average attendance</div><p id="analytics-attendance" class="metric-value">—</p><p class="metric-foot">Attendance rate</p></article>
+        <article class="summary-card analytics-card"><div class="card-label">Pass percentage</div><p id="analytics-pass" class="metric-value">—</p><p class="metric-foot">Of current selection</p></article>
+      </div>
+      <div class="analytics-grid">
+        <article class="panel analytics-panel"><div class="panel-heading"><div><h2>Department performance</h2><p class="panel-subtitle">Average marks by department</p></div></div><div id="department-analytics" class="department-analytics" aria-live="polite"></div></article>
+        <article class="panel analytics-panel"><div class="panel-heading"><div><h2>Grade distribution</h2><p class="panel-subtitle">Students in each grade band</p></div></div><div id="analytics-grades" class="grade-snapshot" aria-live="polite"></div></article>
+        <article class="panel analytics-panel engagement-panel"><div class="panel-heading"><div><h2>Engagement pulse</h2><p class="panel-subtitle">Attendance compared with pass rate</p></div></div><div class="engagement-content"><div class="engagement-ring" id="engagement-ring"><span id="engagement-value">—</span></div><div><p class="engagement-title">Average attendance</p><p id="engagement-copy" class="panel-subtitle">Based on current selection</p><div class="engagement-secondary"><span>Passing</span><strong id="engagement-pass">—</strong></div></div></div></article>
+      </div>
+    </section>
+
+    <section id="section-about" class="app-section" aria-labelledby="about-heading" hidden>
+      <div class="page-heading"><div><p class="eyebrow">PROJECT NOTES <span class="eyebrow-dot" aria-hidden="true"></span> NORTHSTAR ACADEMY</p><h1 id="about-heading" tabindex="-1">About this project</h1><p class="intro">A lightweight tool for making student progress easier to understand.</p></div></div>
+      <div class="about-grid">
+        <article class="panel about-panel about-purpose"><span class="about-kicker">THE PURPOSE</span><h2>Student success, in focus.</h2><p>This dashboard turns a small sample of student results into a useful overview for educators. It brings achievement and attendance together so teams can spot patterns, celebrate progress, and find students who may benefit from support.</p><div class="about-stat"><strong id="about-count">—</strong><span>sample student records loaded locally</span></div></article>
+        <article class="panel about-panel"><span class="about-kicker">BUILT WITH</span><h2>Simple by design</h2><ul class="about-list"><li>Semantic HTML5 sections and controls</li><li>Responsive CSS with system fonts</li><li>Vanilla JavaScript and browser fetch()</li><li>Local static JSON dataset and inline SVG charts</li></ul></article>
+        <article class="panel about-panel"><span class="about-kicker">ACCESSIBILITY</span><h2>Usable by more people</h2><ul class="about-list"><li>Keyboard-operable navigation and buttons</li><li>Visible focus styles and clear labels</li><li>Live result counts, status text, and chart descriptions</li><li>Accessible modal details and reduced-motion support</li></ul></article>
+        <article class="panel about-panel"><span class="about-kicker">PERFORMANCE & QUALITY</span><h2>Lean and reviewed</h2><ul class="about-list"><li>One small JSON request; filtering runs in memory</li><li>Document fragments for efficient table updates</li><li>No frameworks, fonts, or third-party dependencies</li><li>Verified locally for navigation, filters, sorting, details, and responsive layout</li></ul><button type="button" class="action-button about-action" data-go="analytics">Explore analytics <span aria-hidden="true">→</span></button></article>
+      </div>
+    </section>
+    <footer class="page-footer"><span>Northstar Academy <span aria-hidden="true">·</span> Student success, in focus.</span><span>Data refreshed for Spring 2025</span></footer>
+  </main>
+  <dialog id="student-dialog" class="student-dialog" aria-labelledby="dialog-name"><div class="dialog-heading"><div><p class="eyebrow">STUDENT PROFILE</p><h2 id="dialog-name">Student name</h2></div><button class="icon-button" id="dialog-x" type="button" aria-label="Close student details">×</button></div><dl id="dialog-details" class="detail-list"></dl><div class="dialog-actions"><button class="action-button primary-action" id="dialog-close" type="button">Close details</button></div></dialog>
+</body>
+</html>
